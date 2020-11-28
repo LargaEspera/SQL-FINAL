@@ -1,0 +1,519 @@
+create table Countries (
+	country_id int primary key,
+	country_name varchar (30),
+	country_location varchar (30),
+	number_of_teams int,
+	TI_location_times int
+);
+create table Teams (
+	team_id int primary key,
+	place int,
+	team_name varchar (30),
+	foundation_date date,
+	country_id int,
+	rating_place int,
+	victories int,
+	defeats int,
+	number_of_players int,
+	prize int,
+	foreign key (country_id) references Countries(country_id),
+	foreign key (victories) references Rating(victories),
+	foreign key (defeats) references Rating(defeats),
+	foreign key (prize) references Prize_pool(prize_amount),
+	foreign key (rating_place) references Rating(rating_place),
+	unique (team_id),
+	unique (team_name)
+);
+create table Players (
+	player_id int primary key,
+	name varchar (30),
+	surname varchar (40),
+	nickname varchar (40),
+	age int,
+	team_name varchar (30),
+	team_id int,
+	foreign key (team_name) references Teams(team_name),
+	foreign key (team_id) references Teams(team_id)
+);
+create table Reserve_players (
+	Rplayer_id int primary key,
+	name varchar (30),
+	surname varchar (40),
+	nickname varchar (40),
+	age int,
+	team_name varchar (30),
+	team_id int,
+	foreign key (team_name) references Teams(team_name),
+	foreign key (team_id) references Teams(team_id)
+);
+create table Coaches (
+	coach_id int primary key,
+	name varchar (30),
+	surname varchar (40),
+	nickname varchar (40),
+	age int,
+	team_name varchar (30),
+	team_id int,
+	foreign key (team_name) references Teams(team_name),
+	foreign key (team_id) references Teams(team_id)
+);
+create table Prize_pool (
+	prize_place int primary key,
+	prize_amount int,
+	currency varchar (10),
+	unique (prize_amount)
+);
+create table Rating (
+	rating_place int primary key,
+	victories int,
+	defeats int,
+	unique (rating_place),
+	unique (victories),
+	unique (defeats)
+);
+create table Commentators (
+	commentator_id int primary key,
+	name varchar (30),
+	surname varchar (30),
+	nickname varchar (40),
+	age int,
+	TI varchar (20),
+	unique (TI),
+	unique (nickname)
+);
+create table TI (
+	TI_id int primary key,
+	TI varchar (20),
+	location varchar (50),
+	TI_commentator varchar (40),
+	tournament_budget int,
+	foreign key (TI) references Commentators(TI),
+	foreign key (TI_commentator) references Commentators(nickname),
+	foreign key (tournament_budget) references Tournament_budget(budget)
+);
+create table Tournament_budget (
+	TI int primary key,
+	TI_name varchar (40),
+	budget int,
+	unique (budget)
+);
+
+insert into Countries (country_id, country_name, country_location, number_of_teams, ti_location_times)
+values (16, 'European union', 'Europe', 3, 1),
+(08, 'Russian Federation', 'Eurasia', 1, 0),
+(09, 'China', 'Asia', 5, 1),
+(01, 'USA', 'North America', 3, 7),
+(22, 'Malaysia', 'Asia', 1, 0),
+(14, 'Sweden', 'Europe', 1, 0),
+(30, 'Philippines', 'Asia', 1, 0),
+(15, 'Ukraine', 'Europe', 1, 0),
+(29, 'Peru', 'South America', 1, 0),
+(00, 'Kazakstan', 'Eurasia', 1, 1);
+
+insert into Teams(team_id, place, team_name, foundation_date, country_id, rating_place, victories, defeats, number_of_players, prize)
+values (01, 4, 'Team Secret', '2009-05-24', 16, 4, 24, 4, 7, 2053634),
+(02, 9, 'Virtus.Pro', '2007-11-01', 08, 9, 22, 6, 5, 684545),
+(03, 6, 'Vici Gaming', '2012-05-02', 09, 6, 21, 7, 5, 1197954),
+(04, 5, 'Evil Geniuses', '2014-05-21', 01, 5, 20, 8, 5, 1197953),
+(05, 2, 'Team Liquid', '2013-12-01', 16, 2, 18, 10, 5, 4449542),
+(06, 3, 'PSG.LGD', '2011-04-11', 09, 3, 16, 12, 5, 3080453),
+(07, 14, 'Fnatic', '2011-03-30', 22, 14, 15, 13, 5, 513409),
+(08, 17, 'NIP', '2015-11-02', 30, 17, 14, 14, 5, 85568),
+(09, 10, 'TNC Predator', '2017-12-01', 29, 10, 13, 15, 5, 684544),
+(10, 1, 'OG', '2009-01-02', 16, 1, 11, 17, 5, 15573397),
+(11, 13, 'Alliance', '2008-02-28', 14, 13, 10, 18, 5, 513408),
+(12, 15, 'Keen Gaming', '2012-12-23', 09, 15, 9, 19, 5, 513407),
+(13, 16, 'Natus Vincere', '2013-11-28', 15, 16, 8, 20, 5, 513406),
+(14, 7, 'RNG Up', '2013-12-26', 09, 7, 6, 22, 5, 855682),
+(15, 18, 'Chaos', '2014-07-01', 09, 18, 5, 23, 5, 85567),
+(16, 12, 'Mineski', '2011-08-04', 01, 12, 4, 24, 5, 684543),
+(17, 11, 'Newbee', '2012-09-10', 00, 11, 3, 25, 5, 684542),
+(18, 8, 'Infamous', '2011-10-10', 00, 8, 2, 26, 5, 855681);
+
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (301, 'Jordan', 'Poltone',        'MATUMBAMAN', 21, 'Team Secret', 1 );
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (302, 'Jeno', 'Fearnill',         'Nisha', 27, 'Team Secret', 1 );
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (303, 'Orion', 'Labb',            'zai', 24, 'Team Secret', 1 );
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (304, 'Guy', 'Garrit',            'YapzOr', 20, 'Team Secret', 1 );
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (305, 'Mina', 'Bailey',           'Puppey', 29, 'Team Secret', 1 );
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (306, 'Bryce', 'Duker',           'aros', 24, 'Team Secret', 1 );
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (307, 'Rocky', 'Files',           'Fakie', 28, 'Team Secret', 1 );
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (308, 'Lindsay', 'Tangye',        'epileptick1d', 28, 'Virtus.Pro',  2 );
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (309, 'Graehme', 'Lilian',        'gpK', 22, 'Virtus.Pro',  2 );
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (310, 'Alfonse', 'O''Harney',     'DM', 24, 'Virtus.Pro',  2);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (311, 'Al', 'Ridgers',            'Save-', 25, 'Virtus.Pro',  2);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (312, 'Roseanne', 'Lackham',      'illias', 25, 'Virtus.Pro',  2);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (313, 'Eddie', 'Sollas',          '23savage', 21,'Vici Gaming',  3);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (314, 'Lucky', 'Gladwish',        'Erica', 27,'Vici Gaming',  3);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (315, 'Kilian', 'Crock',          'Ori', 21,'Vici Gaming',  3);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (316, 'Bree', 'O'' Neligan',      'ELeVen', 21,'Vici Gaming',  3);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (317, 'Andrea', 'Duffin',         'Pyw', 25,'Vici Gaming',  3);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (318, 'Faina', 'Acton',           'Dy', 22,'Vici Gaming',  3);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (319, 'Bertina', 'Largan',        'Arteezy', 27, 'Evil Geniuses', 4);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (320, 'Ario', 'Donohoe',          'Abed', 26, 'Evil Geniuses', 4);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (321, 'Nariko', 'Kores',          'iceiceice', 21, 'Evil Geniuses', 4);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (322, 'Lorie', 'Ohanessian',      'Cr1t-', 24, 'Evil Geniuses', 4);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (323, 'Ambrosi', 'Worrell',       'Fly', 22, 'Evil Geniuses', 4);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (324, 'Melitta', 'Dinkin',        'miCKe', 23, 'Team Liquid', 5);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (325, 'Alanah', 'Eadmeads',       'qojqva', 22, 'Team Liquid',5);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (326, 'Paddy', 'Mealiffe',        'Boxi', 22, 'Team Liquid', 5);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (327, 'Fitz', 'Lydon',            'Taiga', 21, 'Team Liquid', 5);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (328, 'Patton', 'Spraberry',      'iNSaNiA', 26, 'Team Liquid', 5);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (329, 'Hailee', 'Gregolotti',     'Ame', 28, 'PSG.LGD',  6);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (330, 'Prent', 'Coning',          'NothingToSay', 25, 'PSG.LGD',  6);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (331, 'Noby', 'Yitzowitz',        'Faith_bian', 27, 'PSG.LGD',  6);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (332, 'Hagan', 'Cunnell',         'XinQ', 26, 'PSG.LGD',  6);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (333, 'Millard', 'Cazereau',      'y', 21, 'PSG.LGD',  6);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (334, 'Duff', 'Darling',          'Raven', 28, 'Fnatic', 7);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (335, 'Lammond', 'Ickovici',      'Moon', 29, 'Fnatic', 7);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (336, 'Melesa', 'Anear',          'DJ', 22, 'Fnatic', 7);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (337, 'Dore', 'Cowsby',           'bfg', 27, 'Fnatic', 7);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (338, 'Giovanna', 'Hopfner',      'ghj', 29, 'Fnatic', 7);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (339, 'Vivian', 'Gisburn',        'Charlie', 25, 'NIP',    8);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (340, 'Sheffy', 'Jewson',         'Supream', 24, 'NIP',    8);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (341, 'Leicester', 'Ruoss',       'SaberLighT', 23, 'NIP',    8);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (342, 'Mason', 'Geerits',         'Era', 21, 'NIP',    8);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (343, 'Ania', 'Cornes',           'nagibator', 22, 'NIP',    8);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (344, 'Stanley', 'Coldridge',     'Gabbi', 23, 'TNC Predator', 9);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (345, 'Leeann', 'Eastope',        'Armel', 23, 'TNC Predator', 9);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (346, 'Rikki', 'Kochl',           'Tims', 24, 'TNC Predator', 9);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (347, 'Beniamino', 'Pettet',      'Whitemon', 21, 'TNC Predator', 9);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (348, 'Lanny', 'Llorens',         'kpii', 21, 'TNC Predator', 9);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (349, 'Tuesday', 'Chisnell',      'Topson', 23, 'OG',  10);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (350, 'Hadley', 'Grieger',        'MidOne', 28, 'OG',  10);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (351, 'Uriah', 'Armer',           'Ceb', 27, 'OG',  10);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (352, 'Zabrina', 'Cottingham',    'Saksa', 24, 'OG',  10);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (353, 'Holmes', 'Kuschel',        'n0tail', 22, 'OG',  10);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (354, 'Myca', 'Manby',            'ana', 27, 'OG',  10);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (355, 'Iolanthe', 'Paige',        'Nikobaby', 27, 'Alliance', 11);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (356, 'Nicolais', 'Arnald',       'Limmp', 29, 'Alliance', 11);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (357, 'Waverly', 'Rulten',        's4', 23, 'Alliance', 11);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (358, 'Christabella', 'Judron',   'Handsken', 21, 'Alliance', 11);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (359, 'Ardisj', 'Strutz',         'Fng', 29, 'Alliance', 11);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (360, 'Alejandrina', 'Mapholm',   'Eri', 28, 'Keen Gaming', 12);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (361, 'Henri', 'Caney',           'Blood', 26, 'Keen Gaming', 12);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (362, 'Valma', 'Flay',            'xiaofu', 25, 'Keen Gaming', 12);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (363, 'Lorens', 'Earlam',         'Yds', 20, 'Keen Gaming', 12);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (364, 'Hy', 'Farryan',            'Fantasy	', 22, 'Keen Gaming', 12);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (365, 'Frederik', 'Osbidston',    'V-Tune', 28, 'Natus Vincere',  13);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (366, 'Feliza', 'Gosden',         'Iceberg', 26, 'Natus Vincere',  13);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (367, 'Gardy', 'Stoppard',        'GeneRaL', 20, 'Natus Vincere',  13);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (368, 'Chevy', 'Geerling',        'RodjER', 22, 'Natus Vincere',  13);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (369, 'Theobald', 'Tremlett',     'ALWAYSWANNAFLY', 24, 'Natus Vincere',  13);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (370, 'Daniele', 'Impleton',      'Monet', 28, 'RNG Up', 14);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (371, 'Adelheid', 'Rosita',       'luhao', 26, 'RNG Up', 14);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (372, 'Pail', 'Mullis',           'Flywin', 25, 'RNG Up', 14);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (373, 'Kristopher', 'Biagi',      'FelixCiaoBa', 20, 'RNG Up', 14);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (374, 'Krissy', 'Waudby',         'Super', 29, 'RNG Up', 14);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (375, 'Paloma', 'Badsworth',      'YawaR', 20, 'Chaos', 15);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (376, 'Daffi', 'Trowel',          'MSS', 20, 'Chaos', 15);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (377, 'Madelin', 'Sholl',         'Quinn', 26, 'Chaos', 15);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (378, 'Charleen', 'Falconer',     'Biver', 21, 'Chaos', 15);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (379, 'Noelyn', 'Sibylla',        'SVG', 23, 'Chaos', 15);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (380, 'Gavrielle', 'Mance',       'MiLAN', 28, 'Chaos', 15);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (381, 'Berget', 'Patient',        'vtFADED', 29, 'Chaos', 15);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (382, 'Cara', 'Scathard',         'Gunna', 23, 'Chaos', 15);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (383, 'Flora', 'Benzies',         'Lucifer', 24, 'Mineski', 16);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (384, 'Arielle', 'Hellen',        'Jayjay', 24, 'Mineski', 16);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (385, 'Hazlett', 'Dorcey',        'Jeyo', 26, 'Mineski', 16);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (386, 'Lavinie', 'Rands',         'Paseo-Nma', 20, 'Mineski', 16);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (387, 'Morton', 'Lummis',         'PlayHard', 26, 'Mineski', 16);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (388, 'Belvia', 'Sturm',          'Sel', 26, 'Mineski', 16);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (389, 'Gaye', 'Brumbye',          'Noname', 21, 'Newbee', 17);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (390, 'Virgie', 'de Mendoza',     'KIlo', 28, 'Newbee', 17);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (391, 'Rorie', 'Pantling',        '1124rrr', 24, 'Newbee', 17);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (392, 'Dagmar', 'Kellaway',       'bowman', 29, 'Newbee', 17);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (393, 'Gerti', 'Vaney',           'fidger', 26, 'Newbee', 17);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (394, 'Dionis', 'Filippazzo',     'ways', 23, 'Newbee', 17);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (395, 'Germaine', 'Eaglen',       'Madara', 27, 'Infamous', 18);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (396, 'Bernice', 'Twizell',       'Robo-Z', 28, 'Infamous', 18);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (397, 'Devon', 'Ravenscraft',     'Benjaz', 28, 'Infamous', 18);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (398, 'Melony', 'Hackney',        'sl4d1n', 22, 'Infamous', 18);
+insert into Players (player_id, name, surname, nickname, age, team_name, team_id) values (399, 'Herculie', 'Tewnion',      'Papita', 29, 'Infamous', 18);
+
+insert into Reserve_players (rplayer_id, name, surname, nickname, age, team_name, team_id)
+values (90, 'Sin', 'Jyiu', 'Dy', 21, 'Vici Gaming', 03),
+(91, 'Gan', 'Foru', 'Saksa', 23, 'OG', 10),
+(92, 'Indus', 'Zeus', 'MiLAN', 25, 'Chaos', 15),
+(93, 'Aron', 'Black', 'vtFADED', 36, 'Chaos', 15),
+(94, 'Drow', 'Ranger', 'GUNNAR', 19, 'Chaos', 15),
+(95, 'Void', 'Spirit', 'Sel', 20, 'Mineski', 16),
+(96, 'Ember', 'Spirit', 'ways', 24, 'Newbee', 17),
+(97, 'Bob', 'Invoker', 'incridibilis', 34, 'Infamous', 18),
+(98, 'You', 'Know', 'aros', 35, 'Team Secret', 01),
+(99, 'Win', 'Strike', 'Fakie', 29, 'Team Secret', 01);
+
+insert into Coaches (coach_id, name, surname, nickname, age, team_name, team_id)
+values (80, 'Sin', 'Amper', 's5', 30, 'Vici Gaming', 03),
+(81, 'Some', 'Techies', 'temirez', 31, 'Fnatic', 07),
+(82, 'Ogre', 'Magi', 'artstyle', 31, 'NIP', 08),
+(83, 'Pudge', 'Butcher', 'Xbost', 32, 'OG', 10),
+(84, 'Timber', 'Saw', 'Dendi', 35, 'Team Secret', 01),
+(85, 'Vao', 'Car', 'Sumail', 37, 'Virtus.Pro', 02),
+(86, 'John', 'Snow', 'Solo', 38, 'Mineski', 16),
+(87, 'Jack', 'Richer', 'Universe', 32, 'Keen Gaming', 12),
+(88, 'Raven', 'Fair', 'Miracle', 26, 'Infamous', 18),
+(89, 'Lina', 'Fura', 'Mindcontrol', 28, 'Newbee', 17);
+
+insert into Prize_pool (prize_place, prize_amount, currency)
+values (1, 15573397, 'USD'),
+(2, 4449542, 'USD'),
+(3, 3080453, 'USD'),
+(4, 2053634, 'USD'),
+(5, 1197954, 'USD'),
+(6, 1197953, 'USD'),
+(7, 855682, 'USD'),
+(8, 855681, 'USD'),
+(9, 684545, 'USD'),
+(10, 684544, 'USD'),
+(11, 684543, 'USD'),
+(12, 684542, 'USD'),
+(13, 513409, 'USD'),
+(14, 513408, 'USD'),
+(15, 513407, 'USD'),
+(16, 513406, 'USD'),
+(17, 85568, 'USD'),
+(18, 85567, 'USD');
+
+insert into Rating (rating_place, victories, defeats)
+values (1, 24, 4),
+(2, 22, 6),
+(3, 21, 7),
+(4, 20, 8),
+(5, 18, 10),
+(6, 16, 12),
+(7, 15, 13),
+(8, 14, 14),
+(9, 13, 15),
+(10, 11, 17),
+(11, 10, 18),
+(12, 9, 19),
+(13, 8, 20),
+(14, 6, 22),
+(15, 5, 23),
+(16, 4, 24),
+(17, 3, 25),
+(18, 2, 26);
+
+insert into Commentators (commentator_id, name, surname, nickname, age, ti)
+values (22, 'Olzhas', 'Barabanov', 'vilat', 30, 'TheInternational2011'),
+(54, 'Kastro', 'Fidel', 'kasperrr', 22, 'TheInternational2012'),
+(76, 'John', 'Abzal', 'lightofheaven', 26, 'TheInternational2013'),
+(44, 'Astan', 'Wasys', 'Goblak', 31, 'TheInternational2014'),
+(21, 'Egor', 'Spit', 'Smile', 24, 'TheInternational2015'),
+(11, 'Niko', 'Belik', 'Tonya', 48, 'TheInternational2016'),
+(34, 'Dovakhin', 'Skyrim', 'Donstepan', 43, 'TheInternational2017'),
+(23, 'Roger', 'That', 'Faker', 35, 'TheInternational2018'),
+(77, 'Mike', 'Cover', 'Adekvat', 51, 'TheInternational2019'),
+(01, 'Winston', 'Stalin', 'Godhunt', 27, 'TheInternational2020');
+
+insert into TI (ti_id, ti, location, ti_commentator, tournament_budget)
+values (01, 'TheInternational2011', 'Kologne, Germany', 'vilat', 1600000),
+(02, 'TheInternational2012', 'Seattle, USA', 'kasperrr', 1600001),
+(03, 'TheInternational2013', 'Seattle, USA', 'lightofheaven', 2874380),
+(04, 'TheInternational2014', 'Seattle, USA', 'Goblak', 10923977),
+(05, 'TheInternational2015', 'Seattle, USA', 'Smile', 18429613),
+(06, 'TheInternational2016', 'Seattle, USA', 'Tonya', 20770460),
+(07, 'TheInternational2017', 'Seattle, USA', 'Donstepan', 24787916),
+(08, 'TheInternational2018', 'Vancouver, Canada', 'Faker', 25532177),
+(09, 'TheInternational2019', 'Shanghai, China', 'Adekvat', 34302501),
+(10, 'TheInternational2020', 'Astana, Kazakhstan', 'Godhunt', 34302502);
+
+insert into Tournament_budget (ti, ti_name, budget)
+values (1, 'TI 1', 1600000),
+(2, 'TI 2', 1600001),
+(3, 'TI 3', 2874380),
+(4, 'TI 4', 10923977),
+(5, 'TI 5', 18429613),
+(6, 'TI 6', 20770460),
+(7, 'TI 7', 24787916),
+(8, 'TI 8', 25532177),
+(9, 'TI 9', 34302501),
+(10, 'TI 10', 34302502);
+
+select * from Countries;
+select * from Teams;
+select * from Players;
+select * from Reserve_players;
+select * from Coaches;
+select * from Prize_pool;
+select * from Rating;
+select * from Commentators;
+select * from TI;
+select * from Tournament_budget;
+
+/*drop table Countries;
+drop table Teams;
+drop table Players;
+drop table Reserve_players;
+drop table Coaches;
+drop table Prize_pool;
+drop table Rating;
+drop table Commentators;
+drop table TI;
+drop table Tournament_budget;*/
+
+/* DDL */
+alter table Coaches
+add column coach_salary int default 10000;
+
+alter table Coaches
+drop column coach_salary;
+
+alter table Tournament_budget
+alter ti_name set not null;
+
+alter table Tournament_budget
+add column sponsor varchar(20) default 'Valve';
+
+alter table Tournament_budget
+add unique (ti);
+
+/* DML */
+update Countries
+set ti_location_times = 1
+where country_id = 15;
+
+delete from Countries
+where country_name = 'Malaysia';
+
+update Teams
+set foundation_date = '2012-01-01'
+where rating_place >= 17;
+
+delete from Teams
+where foundation_date = '2005-05-05';
+
+update Players
+set name = 'Alex', Surname = 'Pain'
+where nickname = 'MATUMBAMAN';
+
+delete from Players
+where player_id = 480 and player_id = 481;
+
+update Reserve_players
+set nickname = 'Gunnar1'
+where name = 'Drow' and surname = 'Ranger';
+
+delete from Reserve_players
+where rplayer_id = 95 and rplayer_id = 98;
+
+update Coaches
+set coach_salary = 10001;
+
+delete from Coaches
+where surname = 'Magy';
+
+update Prize_pool
+set currency = 'KZT'
+where prize_amount = 2053634;
+
+delete from Prize_pool
+where currency = 'EUR';
+
+update Rating
+set victories = 22
+where rating_place = 2 and defeats = 6;
+
+delete from Rating
+where rating_place = 19;
+
+update Commentators
+set surname = 'ABZAL'
+where name = 'John' and nickname = 'lightofheaven';
+
+delete from Commentators
+where age >= 60;
+
+update TI
+set location = 'Astana, Kazakhstan'
+where ti = 'TheInternational2014';
+
+delete from TI
+where tournament_budget <= 1599999;
+
+update Tournament_budget
+set sponsor = 'Ubisoft'
+where budget > 2000000 and budget < 3000000;
+
+delete from Tournament_budget
+where (ti_name = 'TI 11' or budget < 1400000) and sponsor = 'Electronic Arts'; 
+
+/* QUERIES */
+select country_id, country_name, number_of_teams
+from Countries
+where ti_location_times > 0 and number_of_teams between 1 and 5; 
+
+select prize_place, prize_amount, currency
+from Prize_pool
+where currency in ('USD') or currency like 'K%';
+
+select name, surname, nickname, team_name
+from Reserve_players
+where name in ('Gan') or name in ('Aron') or surname like 'A%' or length (nickname) between 4 and 10;
+
+select rating_place, victories, defeats
+from Rating
+where victories > 4 and defeats < 24
+order by rating_place desc;
+
+select commentator_id, nickname, ti
+from Commentators
+group by commentator_id
+having (age > 20)
+order by commentator_id asc;
+
+select ti, ti_name, budget, sponsor
+from tournament_budget
+group by ti
+having (sponsor in ('Valve') or sponsor in ('Ubisoft'))
+order by budget desc;
+
+select player_id, name, nickname, Teams.team_name from Players
+inner join Teams on Teams.team_id = Players.team_id
+where player_id between 302 and 340;
+
+select coach_id, avg(coach_salary) from Coaches
+full outer join Teams on Teams.team_name = Coaches.team_name
+group by coach_id
+having sum(age) <= 30000;
+
+select commentator_id, name, nickname from Commentators
+full outer join TI on TI.ti = Commentators.ti
+group by nickname, commentator_id
+having length (surname) between 5 and 9;
+
+select rplayer_id, name, nickname, Teams.team_name from Reserve_players
+right join Teams on Teams.team_id = Reserve_players.team_id
+where (rplayer_id between 340 and 370) or nickname like '%a%';
+
+/* SUBQUERIES */
+select foundation_date, country_id, team_id
+from Teams
+where foundation_date > (select min(foundation_date) 
+			 from Teams);
+
+select Players.team_id, Teams.team_name, name, nickname
+from Teams, Players
+where Teams.team_id = Players.team_id and victories > (select avg(victories) 
+			                               from Rating);
+
+select coach_id, coach_salary, team_name
+from Coaches
+where (coach_id, team_id) in (select coach_id, avg(age)
+			      from Coaches
+			      group by coach_id);
+
+select commentator_id, name, surname, nickname, ti
+from Commentators
+where commentator_id between (select distinct commentator_id
+			      from Commentators
+			      where length(name) between 8 and 10) and (select distinct commentator_id
+									from Commentators
+									where age = (select avg(age)
+										     from Commentators));
+																				  
+select rplayer_id, nickname, team_name
+from Reserve_players
+where age not in (select age 
+		  from Reserve_players 
+		  where nickname = 'Saksa' or rplayer_id between 90 and 92);
